@@ -10,9 +10,11 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository dao;
+    private final SecurityService securityService;
 
-    public UserServiceImpl(UserRepository dao) {
+    public UserServiceImpl(UserRepository dao, SecurityService securityService) {
         this.dao = dao;
+        this.securityService = securityService;
     }
 
     public Optional<User> findById(Long id) {
@@ -24,6 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void saveUser(User user) {
+        user.setPassword(securityService.getCrypt(user.getPassword()));
         dao.save(user);
     }
 

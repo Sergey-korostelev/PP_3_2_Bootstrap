@@ -24,7 +24,7 @@ public class InitDb {
         Set<Role> set = new HashSet<>();
         set.add(new Role("ROLE_ADMIN"));
         set.add(new Role("ROLE_USER"));
-        User defaultUser = new User("admin@mail.ru", "$2a$12$9ozYHygMsqMAvOfFrWhgQeQcNjc4oeMQM4l2YE/fEG.hfu1UCsfle"
+        User defaultUser = new User("admin@mail.ru", "admin"
                 , set.stream().map(x -> new Role(x.getAuthority())).collect(Collectors.toList()));
         if (0 == service.count()) {
             service.saveUser(defaultUser);

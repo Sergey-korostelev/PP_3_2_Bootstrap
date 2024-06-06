@@ -1,10 +1,12 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.sun.istack.NotNull;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,15 +34,15 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @NotNull
     @Column(name = "username",
             unique = true)
     private String username;
 
     @Column(name = "password")
     private String password;
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH,
-            CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @Cascade(CascadeType.SAVE_UPDATE)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
